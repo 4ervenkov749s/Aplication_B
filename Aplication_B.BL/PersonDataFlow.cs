@@ -24,7 +24,7 @@ namespace Aplication_B.BL
 
             var publishBlock = new ActionBlock<Person>(person =>
             {
-                Console.WriteLine($"Updated Vale:{person.LastUpdated}");
+                Console.WriteLine($"Updated Value:{person.LastUpdated}");
             });
 
             var linkOptions = new DataflowLinkOptions()

@@ -12,7 +12,7 @@ namespace Aplication_B.BL.RabbitMq
         private readonly IModel _channel;
         private readonly IConnection _connection;
         private readonly IPersonDataFlow _personDataFlow;
-        public RabbitMqConsumer()
+        public RabbitMqConsumer(IPersonDataFlow personDataFlow)
         {
             var factory = new ConnectionFactory()
             {
@@ -28,6 +28,8 @@ namespace Aplication_B.BL.RabbitMq
             _channel = _connection.CreateModel();
 
             _channel.ExchangeDeclare("person",ExchangeType.Direct, durable: true);
+
+            _personDataFlow = personDataFlow;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
