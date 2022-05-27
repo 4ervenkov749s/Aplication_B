@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Aplication_B.BL.Kafka
 {
-    public class KafkaService 
+    public class KafkaService : IKafkaService
     {
 
         private static IProducer<int, Person> _producer;

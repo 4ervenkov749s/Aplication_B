@@ -1,4 +1,5 @@
 using Aplication_B.BL;
+using Aplication_B.BL.Kafka;
 using Aplication_B.BL.RabbitMq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,8 @@ namespace Aplication_B
             services.Configure<RabbitMqConfig>(Configuration.GetSection(nameof(RabbitMqConfig)));
             services.AddHostedService<RabbitMqConsumer>();
             services.AddSingleton<IPersonDataFlow, PersonDataFlow>();
+            services.AddSingleton<IKafkaService, KafkaService>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

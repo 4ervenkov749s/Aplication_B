@@ -1,4 +1,5 @@
-﻿using MessagePack;
+﻿using Aplication_B.BL.Kafka;
+using MessagePack;
 using System;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -7,11 +8,14 @@ namespace Aplication_B.BL
 {
     public class PersonDataFlow : IPersonDataFlow
     {
+        private IKafkaService _producer;
 
         TransformBlock<byte[], Person> entryBlock;
 
-        public PersonDataFlow()
+        public PersonDataFlow(IKafkaService producer)
         {
+            _producer = producer;
+
             entryBlock = new TransformBlock<byte[], Person>(data => MessagePackSerializer.Deserialize<Person>(data));
 
             var enrichBlock = new TransformBlock<Person, Person>(p =>
@@ -25,6 +29,7 @@ namespace Aplication_B.BL
             var publishBlock = new ActionBlock<Person>(person =>
             {
                 Console.WriteLine($"Updated Value:{person.LastUpdated}");
+                _producer.SendPersonAsync(person);
             });
 
             var linkOptions = new DataflowLinkOptions()
